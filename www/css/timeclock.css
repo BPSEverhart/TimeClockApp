@@ -1,0 +1,110 @@
+body {
+  font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+  font-size:14px;
+  height:100%;
+  margin:0px;
+  padding:0px;
+  text-transform:uppercase;
+  width:100%;
+}
+h1 {
+  font-size:24px;
+  font-weight:normal;
+  margin:0px;
+  overflow:visible;
+  padding:0px;
+  text-align:center;
+}
+
+.event {
+  border-radius:4px;
+  -webkit-border-radius:4px;
+  color:#FFFFFF;
+  font-size:12px;
+  margin:0px 30px;
+  padding:2px 0px;
+}
+
+.event.listening {
+  background-color:#333333;
+  display:block;
+}
+
+.event.received {
+  background-color:#4B946A;
+  display:none;
+}
+
+@keyframes fade {
+  from { opacity: 1.0; }
+  50% { opacity: 0.4; }
+  to { opacity: 1.0; }
+}
+
+@-webkit-keyframes fade {
+  from { opacity: 1.0; }
+  50% { opacity: 0.4; }
+  to { opacity: 1.0; }
+}
+
+.blink {
+  margin-top: 30px;
+  animation:fade 3000ms infinite;
+  -webkit-animation:fade 3000ms infinite;
+}
+button {
+  padding: 10px;
+  margin: 15px;
+}
+label {
+  font-weight: bold;
+  font-size: 12px;
+  display: inline-block;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+table {
+  width: 100%;
+}
+#empName, #empNumber, #emailAddress, #empLocation {
+  display: inline-block;
+  border: 1px solid #ebebeb;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  padding: 5px;
+  width: 90%;
+  box-shadow: none;
+}
+
+#address {
+  width: 100%;
+  border: none;
+}
+
+td {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+h1 {
+  font-size: 18px;
+  text-align: center;
+}
+.button-calm, .button-primary {
+  font-size: 14px;
+  margin-top: 5px;
+  text-transform: none;
+  min-height: 32px !important;
+  line-height: 32px !important;
+  background-color: #d5d1e2 !important;
+  border-color: #979797 !important;
+  color: #1f1f1f !important;
+}
+
+.space-below {
+  margin-bottom: 5px;
+}
+
+.bk-blue {
+  background-color: #9e9e9e;
+}

@@ -1,0 +1,30 @@
+<ion-view title="Settings">
+  <ion-content overflow-scroll="true" padding="true" class="has-header bk-blue">
+    <ion-item class="item-divider"></ion-item>
+
+    <ion-item>
+      <form name="settingsForm">
+        <table>
+          <tr>
+            <td width="33%"><label><h4>Name: </h4></label></td>
+            <td width="67%"><input type="text" id="empName" ng-model="empName" placeholder="Enter employee name"></td>
+          </tr>
+          <tr>
+            <td><label><h4>Id / Number: </h4></label></td>
+            <td><input type="text" id="empNumber" ng-model="empNumber" placeholder="Enter employee id"></td>
+          </tr>
+          <tr>
+            <td><label><h4>Email: </h4></label></td>
+            <td><input type="email" id="emailAddress" ng-model="emailAddress" placeholder="Enter supervisor's email"></td>
+          </tr>
+          <tr>
+            <td><button class="button button-calm" ng-click="saveMySettings(empName, empNumber, emailAddress)">Update</button>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </ion-item>
+    <ion-item class="item-divider"></ion-item>
+
+  </ion-content>
+</ion-view>
