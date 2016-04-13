@@ -14,23 +14,23 @@
       <ion-item class="item-divider"></ion-item>
 
       <ion-item>
-        <form>
+        <form ng-show="StartOn">
           <input type="text" id="empLocation" ng-model="empLocation" placeholder="Enter job number/work site" />
-          <p><button ng-click="driveInClock(empLocation)">Start New Job</button></p>
+          <p><button class="button button-calm" ng-click="driveInClock(empLocation)">Start New Job</button></p>
         </form>
-        <h4 ng-show="driveInClocked"> Travel Time To Site: </h4>
-        <div ng-show="driveInClocked">
+        <h4 ng-show="driveInClocked && !StartOn"> Travel Time To Site: </h4>
+        <div ng-show="driveInClocked && !StartOn">
           <p>Clock In: {{driveInTime | date:'HH:mm'}}<p>
         </div>
-        <div ng-show="serviceInClocked">
+        <div ng-show="serviceInClocked && !StartOn">
           <p>Clock Out: {{serviceInTime | date:'HH:mm'}}<p>
         </div>
       </ion-item>
 
       <ion-item>
-        <h4> Service: </h4>
+        <h4> Service: {{empLocation}}</h4>
 
-        <button ng-show="ServIn" ng-click="serviceInClock()">Clock In</button>
+        <button class="button button-calm" ng-show="ServIn" ng-click="serviceInClock()">Clock In</button>
 
         <div ng-show="serviceInClocked">
           <p>Clock In: {{serviceInTime | date: 'HH:mm'}}</p>
@@ -40,7 +40,7 @@
           <p>Location: {{serviceLoc}} {{error}}</p>
         </div>
 
-        <button ng-show="ServOut" ng-click="serviceOutClock()">Clock Out</button>
+        <button class="button button-calm" ng-show="ServOut" ng-click="serviceOutClock()">Clock Out</button>
 
         <div ng-show="serviceOutClocked">
           <p>Clock Out: {{serviceOutTime | date:'HH:mm'}}<p>
@@ -52,13 +52,13 @@
       <ion-item>
         <h4> Lunch: </h4>
 
-        <button ng-show="!lunchStarted" ng-click="lunchClock('in')">Lunch Start</button>
+        <button class="button button-calm" ng-show="!lunchStarted" ng-click="lunchClock('in')">Lunch Start</button>
         <div ng-show="lunchStarted">
           <p>Lunch Start: {{lunchStartTime | date: 'HH:mm'}}</p>
           <p>Location: {{lunchLocation}} {{error}}</p>
         </div>
 
-        <button ng-show="!lunchLogged" ng-click="lunchClock('out')">Lunch End</button>
+        <button class="button button-calm" ng-show="!lunchLogged" ng-click="lunchClock('out')">Lunch End</button>
         <div ng-show="lunchLogged">
           <p>Lunch End: {{lunchEndTime | date: 'HH:mm'}}</p>
         </div>
@@ -73,7 +73,7 @@
             <input type="checkbox" name="perDiem" id="perDiem"> Per Diem Requested
           </label>
         </form>
-        <button ng-click="closeOut()">Clock Out</button>
+        <button class="button button-calm" ng-click="closeOut()">Clock Out</button>
       </ion-item>
 
       <ion-item class="item-divider"></ion-item>
