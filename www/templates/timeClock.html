@@ -28,7 +28,8 @@
       </ion-item>
 
       <ion-item>
-        <h4> Service: {{empLocation}}</h4>
+        <h4> Service: </h4>
+        <p ng-show="driveInClocked"> {{displayedNote}}</p>
 
         <button class="button button-calm" ng-show="ServIn" ng-click="serviceInClock()">Clock In</button>
 

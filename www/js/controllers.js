@@ -36,6 +36,7 @@ angular.module('tcApp.controllers', ['ngRoute'])
       $scope.error = "";
       $scope.locToSet = "";
       $scope.empLocation = "";
+      $scope.displayedNote = "";
 
       $scope.$watch(
         "$scope.serviceLoc",
@@ -74,6 +75,7 @@ angular.module('tcApp.controllers', ['ngRoute'])
         // Retrieve locations
         $scope.serviceLoc = Settings.serviceLoc();
         $scope.empLocation = Settings.empLocation();
+        $scope.displayedNote= $scope.empLocation;
         $scope.lunchLocation = Settings.lunchLocation();
 
         // Set Display Flags as Appropriate based on most recent state of the App
@@ -212,6 +214,8 @@ angular.module('tcApp.controllers', ['ngRoute'])
         $scope.empLocation = empLocation;
         Settings.empLocation(empLocation);
 
+        $scope.displayedNote = empLocation;
+
         $scope.driveInTime = new Date();
         Settings.driveInTime($scope.driveInTime);
 
@@ -285,13 +289,13 @@ angular.module('tcApp.controllers', ['ngRoute'])
         // send email
         console.log($scope.message);
 
-        cordova.plugins.email.open({
-          to: $scope.sendTo,              // email addresses for TO field
-          subject: "My Time Sheet",       // subject of the email
-          body: $scope.message,           // email body (for HTML, set isHtml to true)
-          isHtml: false                   // indicates if the body is HTML or plain text
-        }, function () {
-        }, this);
+        //cordova.plugins.email.open({
+        //  to: $scope.sendTo,              // email addresses for TO field
+        //  subject: "My Time Sheet",       // subject of the email
+        //  body: $scope.message,           // email body (for HTML, set isHtml to true)
+        //  isHtml: false                   // indicates if the body is HTML or plain text
+        //}, function () {
+        //}, this);
 
         $scope.clearData()
       };
@@ -312,6 +316,7 @@ angular.module('tcApp.controllers', ['ngRoute'])
         Settings.serviceLoc($scope.serviceLoc);
         $scope.empLocation = "";
         Settings.empLocation($scope.empLocation);
+        $scope.displayedNote = $scope.empLocation;
 
         $scope.lunchStarted = false;
         Settings.lunchStarted(false);
