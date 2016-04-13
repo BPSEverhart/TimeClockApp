@@ -37,11 +37,6 @@ angular.module('tcApp.controllers', ['ngRoute'])
       $scope.locToSet = "";
       $scope.empLocation = "";
 
-      $scope.updateLocation = function(empLocation) {
-        $scope.empLocation = empLocation;
-        Settings.empLocation(empLocation);
-      };
-
       $scope.$watch(
         "$scope.serviceLoc",
         function handleChange (newValue, oldValue) {
@@ -108,6 +103,12 @@ angular.module('tcApp.controllers', ['ngRoute'])
           $scope.ServOut = false;
           $scope.StartOn = true;
         }
+      };
+
+      $scope.timeString = function(date) {
+        var hh = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+        var min = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+        return hh + ":" + min;
       };
 
       // Callback function for the GPS location function
@@ -189,7 +190,7 @@ angular.module('tcApp.controllers', ['ngRoute'])
           $scope.lunchStartTime = new Date();
           Settings.lunchStartTime($scope.lunchStartTime);
           $scope.lunchStarted = Settings.lunchStarted(true);
-          $scope.message += "\n\nLunch: \n\t" + $scope.lunchStartTime;
+          $scope.message += "\n\nLunch: \n\tIn :\t" + $scope.timeString($scope.lunchStartTime);
           $scope.locToSet = 'lunch';
           $scope.getLocation();
         }
@@ -197,17 +198,20 @@ angular.module('tcApp.controllers', ['ngRoute'])
           $scope.lunchEndTime = new Date();
           Settings.lunchEndTime($scope.lunchEndTime);
           $scope.lunchLogged = Settings.lunchLogged(true);
-          $scope.message += "\n\t" + $scope.lunchEndTime +
-            "\n\tLunch Location: \t\t" + $scope.lunchLocation + "\n";
+          $scope.message += "\n\tOut:\t" + $scope.timeString($scope.lunchEndTime) +
+            "\n\tLunch Location: \t" + $scope.lunchLocation + "\n";
         }
         Settings.messageSaved($scope.message);
       };
 
       // Function to Start New Job - this clocks in the drive time and displays the
       // travel clock in
-      $scope.driveInClock = function () {
+      $scope.driveInClock = function(empLocation) {
 
         // create a new job to be logged.
+        $scope.empLocation = empLocation;
+        Settings.empLocation(empLocation);
+
         $scope.driveInTime = new Date();
         Settings.driveInTime($scope.driveInTime);
 
@@ -219,15 +223,15 @@ angular.module('tcApp.controllers', ['ngRoute'])
         Settings.serviceOutClocked(false);
         $scope.serviceLoc = "";
         Settings.serviceLoc($scope.serviceLoc);
-        $scope.empLocation = "";
-        Settings.empLocation($scope.empLocation);
 
         $scope.StartOn = false;
         $scope.ServIn = true;
 
-        $scope.message += "\n\nNew Job \n\tTravel Clock In: \t\t" + $scope.driveInTime;
+        $scope.message += "\n\nNew Job \t" + $scope.empLocation +
+            "\n\tTravel Clock In : \t" + $scope.timeString($scope.driveInTime);
         Settings.messageSaved($scope.message);
       };
+
 
       // Clock in for actual Service call, displays the travel clock out and
       // the service start
@@ -243,8 +247,8 @@ angular.module('tcApp.controllers', ['ngRoute'])
         Settings.serviceInClocked(true);
         $scope.ServIn = false;
         $scope.ServOut = true;
-        $scope.message += "\n\tTravel Clock Out: \t" + $scope.serviceInTime +
-          "\n\n\tService Clock In: \t\t" + $scope.serviceInTime;
+        $scope.message += "\n\tTravel Clock Out: \t" + $scope.timeString($scope.serviceInTime) +
+          "\n\n\tService Clock In : \t" + $scope.timeString($scope.serviceInTime);
         Settings.messageSaved($scope.message);
       };
 
@@ -257,9 +261,13 @@ angular.module('tcApp.controllers', ['ngRoute'])
 
         $scope.ServOut = false;
         $scope.StartOn = true;
-        $scope.message += "\n\tService Clock Out: \t" + $scope.serviceOutTime +
-          "\n\tService Location: \t\t" + $scope.serviceLoc + "\t\t" + $scope.empLocation;
+        $scope.message += "\n\tService Clock Out: \t" + $scope.timeString($scope.serviceOutTime) +
+          "\n\tService Location : \t" + $scope.serviceLoc;
         Settings.messageSaved($scope.message);
+        $scope.empLocation = "";
+        Settings.empLocation($scope.empLocation);
+        var note = document.getElementById('empLocation');
+        note.value = $scope.empLocation;
       };
 
       // Close out for the day.  Sends email detailing work performed.
@@ -271,17 +279,17 @@ angular.module('tcApp.controllers', ['ngRoute'])
         }
 
 
-        $scope.message += "\n\nFinal Clock Out: \t\t" + $scope.closeOutTime;
+        $scope.message += "\n\nFinal Clock Out: \t\t" + $scope.timeString($scope.closeOutTime);
         $scope.empString = "Name: " + Settings.empName() + "\nNumber/Id: " + Settings.empNumber();
         $scope.message = $scope.empString + $scope.message;
         // send email
         console.log($scope.message);
 
         cordova.plugins.email.open({
-          to: $scope.sendTo,         // email addresses for TO field
+          to: $scope.sendTo,              // email addresses for TO field
           subject: "My Time Sheet",       // subject of the email
-          body: $scope.message,        // email body (for HTML, set isHtml to true)
-          isHtml: false                  // indicates if the body is HTML or plain text
+          body: $scope.message,           // email body (for HTML, set isHtml to true)
+          isHtml: false                   // indicates if the body is HTML or plain text
         }, function () {
         }, this);
 
@@ -314,6 +322,9 @@ angular.module('tcApp.controllers', ['ngRoute'])
         $scope.lunchLocation = "";
         Settings.lunchLocation($scope.lunchLocation);
 
+        $scope.empLocation = "";
+        Settings.empLocation($scope.empLocation);
+
         $scope.message = "";
         Settings.messageSaved($scope.message);
 
@@ -321,12 +332,12 @@ angular.module('tcApp.controllers', ['ngRoute'])
         $scope.ServIn = false;
         $scope.ServOut = false;
 
+        document.getElementById('perDiem').checked = false;
       };
 
       $scope.init();
 
     }])
-
 
 
 .controller('settingsCtrl', ["$scope", "$location", "Settings",
