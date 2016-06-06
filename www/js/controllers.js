@@ -291,13 +291,13 @@ angular.module('tcApp.controllers', ['ngRoute'])
         // send email
         console.log($scope.message);
 
-        //cordova.plugins.email.open({
-        //  to: $scope.sendTo,              // email addresses for TO field
-        //  subject: "My Time Sheet",       // subject of the email
-        //  body: $scope.message,           // email body (for HTML, set isHtml to true)
-        //  isHtml: false                   // indicates if the body is HTML or plain text
-        //}, function () {
-        //}, this);
+        cordova.plugins.email.open({
+          to: $scope.sendTo,              // email addresses for TO field
+          subject: "My Time Sheet",       // subject of the email
+          body: $scope.message,           // email body (for HTML, set isHtml to true)
+          isHtml: false                   // indicates if the body is HTML or plain text
+        }, function () {
+        }, this);
 
         $scope.clearData()
       };
