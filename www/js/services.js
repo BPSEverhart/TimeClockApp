@@ -77,11 +77,11 @@ angular.module('tcApp.services', [])
       }
       return localStorage.getItem("_serviceLoc");
     };
-    this.empLocation = function (value) {
+    this.empNotes  = function (value) {
       if (value === null || value != undefined) {
-        localStorage.setItem("_empLocation", value);
+        localStorage.setItem("_empNotes", value);
       }
-      return localStorage.getItem("_empLocation");
+      return localStorage.getItem("_empNotes");
     };
 
 

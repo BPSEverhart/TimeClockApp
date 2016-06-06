@@ -14,10 +14,9 @@
       <ion-item class="item-divider"></ion-item>
 
       <ion-item>
-        <form ng-show="StartOn">
-          <input type="text" id="empLocation" ng-model="empLocation" placeholder="Enter job number/work site" />
-          <p><button class="button button-calm" ng-click="driveInClock(empLocation)">Start New Job</button></p>
-        </form>
+        <button ng-show="StartOn" class="button button-calm" ng-click="driveInClock()">Start New Job</button>
+        <p class="help" ng-show="StartOn">Click to start recording time for a job.</p>
+
         <h4 ng-show="driveInClocked && !StartOn"> Travel Time To Site: </h4>
         <div ng-show="driveInClocked && !StartOn">
           <p>Clock In: {{driveInTime | date:'HH:mm'}}<p>
@@ -29,9 +28,9 @@
 
       <ion-item>
         <h4> Service: </h4>
-        <p ng-show="driveInClocked"> {{displayedNote}}</p>
 
         <button class="button button-calm" ng-show="ServIn" ng-click="serviceInClock()">Clock In</button>
+        <p class="help" ng-show="ServIn">Click on job arrival.</p>
 
         <div ng-show="serviceInClocked">
           <p>Clock In: {{serviceInTime | date: 'HH:mm'}}</p>
@@ -41,9 +40,16 @@
           <p>Location: {{serviceLoc}} {{error}}</p>
         </div>
 
-        <button class="button button-calm" ng-show="ServOut" ng-click="serviceOutClock()">Clock Out</button>
+        <form ng-show="serviceInClocked && !serviceOutClocked">
+          <p class="help">Enter job number/work site notes before clocking out.</p>
+
+          <input type="text" id="empNotes" style="padding:5px; width: 95%; border: 1px solid #979797;"
+                 ng-model="empNotes" placeholder="Enter Notes" />
+          <p><button class="button button-calm" ng-show="ServOut" ng-click="serviceOutClock(empNotes)">Clock Out</button></p>
+        </form>
 
         <div ng-show="serviceOutClocked">
+          <p>{{displayedNote}}</p>
           <p>Clock Out: {{serviceOutTime | date:'HH:mm'}}<p>
         </div>
       </ion-item>
@@ -75,6 +81,7 @@
           </label>
         </form>
         <button class="button button-calm" ng-click="closeOut()">Clock Out</button>
+        <p class="help">Click to email hours for the day.</p>
       </ion-item>
 
       <ion-item class="item-divider"></ion-item>

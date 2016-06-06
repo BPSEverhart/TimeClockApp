@@ -35,7 +35,7 @@ angular.module('tcApp.controllers', ['ngRoute'])
       $scope.lng = null;
       $scope.error = "";
       $scope.locToSet = "";
-      $scope.empLocation = "";
+      $scope.empNotes = "";
       $scope.displayedNote = "";
 
       $scope.$watch(
@@ -74,8 +74,8 @@ angular.module('tcApp.controllers', ['ngRoute'])
 
         // Retrieve locations
         $scope.serviceLoc = Settings.serviceLoc();
-        $scope.empLocation = Settings.empLocation();
-        $scope.displayedNote= $scope.empLocation;
+        $scope.empNotes = Settings.empNotes();
+        $scope.displayedNote= $scope.empNotes;
         $scope.lunchLocation = Settings.lunchLocation();
 
         // Set Display Flags as Appropriate based on most recent state of the App
@@ -208,14 +208,14 @@ angular.module('tcApp.controllers', ['ngRoute'])
 
       // Function to Start New Job - this clocks in the drive time and displays the
       // travel clock in
-      $scope.driveInClock = function(empLocation) {
+      $scope.driveInClock = function() {
+
+        $scope.empNotes = "";
+        Settings.empNotes($scope.empNotes);
+        var note = document.getElementById('empNotes');
+        note.value = $scope.empNotes;
 
         // create a new job to be logged.
-        $scope.empLocation = empLocation;
-        Settings.empLocation(empLocation);
-
-        $scope.displayedNote = empLocation;
-
         $scope.driveInTime = new Date();
         Settings.driveInTime($scope.driveInTime);
 
@@ -231,7 +231,7 @@ angular.module('tcApp.controllers', ['ngRoute'])
         $scope.StartOn = false;
         $scope.ServIn = true;
 
-        $scope.message += "\n\nNew Job \t" + $scope.empLocation +
+        $scope.message += "\n\nNew Job \t" +
             "\n\tTravel Clock In : \t" + $scope.timeString($scope.driveInTime);
         Settings.messageSaved($scope.message);
       };
@@ -257,7 +257,13 @@ angular.module('tcApp.controllers', ['ngRoute'])
       };
 
       // Clock out for Service call, displays the service complete time, ends the job
-      $scope.serviceOutClock = function () {
+      $scope.serviceOutClock = function (empNotes) {
+        $scope.empNotes = empNotes;
+        Settings.empNotes(empNotes);
+
+        $scope.displayedNote = empNotes;
+
+
         $scope.serviceOutTime = new Date();
         Settings.serviceOutTime($scope.serviceOutTime);
         $scope.serviceOutClocked = true;
@@ -266,12 +272,8 @@ angular.module('tcApp.controllers', ['ngRoute'])
         $scope.ServOut = false;
         $scope.StartOn = true;
         $scope.message += "\n\tService Clock Out: \t" + $scope.timeString($scope.serviceOutTime) +
-          "\n\tService Location : \t" + $scope.serviceLoc;
+          "\n\tService Location : \t" + $scope.serviceLoc + "\n\tService Notes :     " + $scope.empNotes;
         Settings.messageSaved($scope.message);
-        $scope.empLocation = "";
-        Settings.empLocation($scope.empLocation);
-        var note = document.getElementById('empLocation');
-        note.value = $scope.empLocation;
       };
 
       // Close out for the day.  Sends email detailing work performed.
@@ -289,13 +291,13 @@ angular.module('tcApp.controllers', ['ngRoute'])
         // send email
         console.log($scope.message);
 
-        cordova.plugins.email.open({
-          to: $scope.sendTo,              // email addresses for TO field
-          subject: "My Time Sheet",       // subject of the email
-          body: $scope.message,           // email body (for HTML, set isHtml to true)
-          isHtml: false                   // indicates if the body is HTML or plain text
-        }, function () {
-        }, this);
+        //cordova.plugins.email.open({
+        //  to: $scope.sendTo,              // email addresses for TO field
+        //  subject: "My Time Sheet",       // subject of the email
+        //  body: $scope.message,           // email body (for HTML, set isHtml to true)
+        //  isHtml: false                   // indicates if the body is HTML or plain text
+        //}, function () {
+        //}, this);
 
         $scope.clearData()
       };
@@ -314,9 +316,9 @@ angular.module('tcApp.controllers', ['ngRoute'])
 
         $scope.serviceLoc = "";
         Settings.serviceLoc($scope.serviceLoc);
-        $scope.empLocation = "";
-        Settings.empLocation($scope.empLocation);
-        $scope.displayedNote = $scope.empLocation;
+        $scope.empNotes = "";
+        Settings.empNotes($scope.empNotes);
+        $scope.displayedNote = $scope.empNotes;
 
         $scope.lunchStarted = false;
         Settings.lunchStarted(false);
@@ -326,9 +328,6 @@ angular.module('tcApp.controllers', ['ngRoute'])
 
         $scope.lunchLocation = "";
         Settings.lunchLocation($scope.lunchLocation);
-
-        $scope.empLocation = "";
-        Settings.empLocation($scope.empLocation);
 
         $scope.message = "";
         Settings.messageSaved($scope.message);
